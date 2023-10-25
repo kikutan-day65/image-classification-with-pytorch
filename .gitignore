@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 
 pdfs_image_classification_task
+resource/
