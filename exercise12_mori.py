@@ -1,4 +1,6 @@
 import torch
+import torch.nn as nn
+import torch.optim as optim
 import torchvision.transforms as transforms
 from torchvision.datasets import ImageFolder
 from torch.utils.data import random_split, DataLoader
@@ -37,3 +39,9 @@ num_epochs = 10
 
 num_classes = 3
 model = ImageNetCNN(num_classes)
+
+# loss function
+criterion = nn.CrossEntropyLoss()
+
+# optimization algorithm
+optimizer = optim.SGD(model.parameters(), lr=learning_rate)
