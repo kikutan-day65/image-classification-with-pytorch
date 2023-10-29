@@ -24,6 +24,8 @@ val_size = dataset_size - train_size - test_size
 
 train_dataset, test_dataset, val_dataset = random_split(dataset, [train_size, test_size, val_size])
 
-print(f"トレーニングセットのサイズ: {len(train_dataset)}")
-print(f"テストセットのサイズ: {len(test_dataset)}")
-print(f"バリデーションセットのサイズ: {len(val_dataset)}")
+batch_size = 32
+
+train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+test_loader = DataLoader(test_dataset, batch_size=batch_size)
+val_loader = DataLoader(val_dataset, batch_size=batch_size)
