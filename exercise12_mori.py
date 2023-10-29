@@ -2,6 +2,7 @@ import torch
 import torchvision.transforms as transforms
 from torchvision.datasets import ImageFolder
 from torch.utils.data import random_split, DataLoader
+from models import ImageNetCNN
 
 
 data_dir = './datasets'
@@ -34,3 +35,5 @@ val_loader = DataLoader(val_dataset, batch_size=batch_size)
 learning_rate = 0.001
 num_epochs = 10
 
+num_classes = 3
+model = ImageNetCNN(num_classes)
