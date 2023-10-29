@@ -161,3 +161,4 @@ cython_debug/
 
 pdfs_image_classification_task
 resource/
+datasets*
