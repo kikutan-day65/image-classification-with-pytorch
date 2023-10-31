@@ -4,7 +4,7 @@ from torchvision.datasets import ImageFolder
 from torch.utils.data.dataloader import DataLoader
 from torch.utils.data import random_split
 import torch.nn as nn
-from cnnModel import CNNImageClassifier
+from exercise12_2_mori import CNNImageClassifier
 
 
 def main():
