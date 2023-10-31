@@ -13,33 +13,35 @@ def main():
 
     transform = transforms.Compose([
         transforms.Resize((150, 150)),
-        transforms.ToTensor()
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
 
     dataset = ImageFolder(data_dir, transform=transform)
 
-    batch_size = 32
-
     dataset_size = len(dataset)
 
-    train_ratio = 0.8
-    val_ratio = 0.2
+    # 80% for train data, otherwise test data
+    train_size = int(0.8 * dataset_size)
+    test_size = dataset_size - train_size
 
-    train_size = int(train_ratio * dataset_size)
-    val_size = dataset_size - train_size
+    # randomly split the data
+    train_data, test_data = random_split(dataset, [train_size, test_size])
 
-    train_data, val_data = random_split(dataset, [train_size, val_size])
+    batch_size = 64
 
-    train_dl = DataLoader(train_data, batch_size, shuffle=True, num_workers=4, pin_memory=True)
-    val_dl = DataLoader(val_data, batch_size*2, num_workers=4, pin_memory=True)
+    train_dl = DataLoader(train_data, batch_size=batch_size, shuffle=True, num_workers=4)
+    val_dl = DataLoader(test_data, batch_size=batch_size, shuffle=False, num_workers=4)
 
-    model = NaturalSceneClassification()
+    device = (
+        "cuda"
+        if torch.cuda.is_available()
+        else "mps"
+        if torch.backends.mps.is_available()
+        else "cpu"
+    )
+    print(f"Using {device} device")
 
-    num_epochs = 30
-    opt_func = torch.optim.Adam
-    lr = 0.001
-
-    history = fit(num_epochs, lr, model, train_dl, val_dl, opt_func)
-
+   
 if __name__ == '__main__':
     main()
