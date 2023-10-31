@@ -50,7 +50,7 @@ def main():
     optimizer = torch.optim.Adam(params=model.parameters(), lr=0.001)
 
     ## training section
-    num_epochs = 30
+    num_epochs = 50
     
     for epoch in range(num_epochs):
         model.train()
@@ -82,6 +82,23 @@ def main():
 
         # print losses each loop
         print(f"Epoch {epoch + 1}, Loss: {total_loss / len(train_dl)}")
+
+    ## evaluation section
+    model.eval()
+    correct = 0
+    total = 0
+
+    with torch.no_grad():
+        for batch in val_dl:
+            images, labels = batch
+            outputs = model(images)
+            _, predicted = torch.max(outputs, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+    accuracy = correct / total
+    print(f"Validation Accuracy: {100 * accuracy:.2f}%")
+
 
 
 if __name__ == '__main__':
