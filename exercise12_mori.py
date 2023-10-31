@@ -1,11 +1,10 @@
 import torch
-import torchvision
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
 from torch.utils.data.dataloader import DataLoader
 from torch.utils.data import random_split
-from cnnModel import NaturalSceneClassification
-from baseModel import fit
+import torch.nn as nn
+from cnnModel import CNNImageClassifier
 
 
 def main():
@@ -33,6 +32,7 @@ def main():
     train_dl = DataLoader(train_data, batch_size=batch_size, shuffle=True, num_workers=4)
     val_dl = DataLoader(test_data, batch_size=batch_size, shuffle=False, num_workers=4)
 
+    # just make sure using device
     device = (
         "cuda"
         if torch.cuda.is_available()
@@ -41,6 +41,13 @@ def main():
         else "cpu"
     )
     print(f"Using {device} device")
+
+    # create model instance
+    model = CNNImageClassifier()
+
+    # loss functtion and optimizer
+    criterion = nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(params=model.parameters(), lr=0.001)
 
    
 if __name__ == '__main__':
