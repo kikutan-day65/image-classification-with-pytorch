@@ -11,7 +11,7 @@ def main():
     data_dir = './datasets'
 
     transform = transforms.Compose([
-        transforms.Resize((150, 150)),
+        transforms.Resize((32, 32)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
@@ -49,6 +49,40 @@ def main():
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(params=model.parameters(), lr=0.001)
 
-   
+    ## training section
+    num_epochs = 30
+    
+    for epoch in range(num_epochs):
+        model.train()
+        total_loss = 0.0
+
+        # split to the mini batch
+        for batch in train_dl:
+
+            # extract corresponding image data and labels
+            images, labels = batch
+
+            # reset gradient to zero (required before loop new mini batch)
+            optimizer.zero_grad()
+
+            # get prediction
+            outputs = model(images)
+
+            # calculate loss
+            loss = criterion(outputs, labels)
+
+            # back propagation
+            loss.backward()
+
+            # update weight
+            optimizer.step()
+
+            # add each loss to total loss
+            total_loss += loss.item()
+
+        # print losses each loop
+        print(f"Epoch {epoch + 1}, Loss: {total_loss / len(train_dl)}")
+
+
 if __name__ == '__main__':
     main()
