@@ -99,6 +99,8 @@ def main():
     accuracy = correct / total
     print(f"Validation Accuracy: {100 * accuracy:.2f}%")
 
+    # save the trained model
+    torch.save(model.state_dict(), 'trained_model.pth')
 
 
 if __name__ == '__main__':
